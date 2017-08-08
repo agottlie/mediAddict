@@ -61,7 +61,7 @@ class Display extends Component {
                                 type="checkbox"
                                 value={episode.id}
                                 className={"season" + j}
-                                onChange={(e) => {this.updateWatched(e, i)}}
+                                onChange={(e) => {this.props.updateWatched(e, i)}}
                             />
                             <h5 >Aired: {episode.airdate}</h5>
                         </div>);

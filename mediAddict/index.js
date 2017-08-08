@@ -36,6 +36,7 @@ app.use(bodyParser.json());
 app.use('/', require('./controllers/index'));
 app.use('/users', require('./controllers/userController'));
 app.use('/shows', require('./controllers/showsController'));
+app.use('/episodes', require('./controllers/episodesController'));
 
 app.use(cookieParser());
 

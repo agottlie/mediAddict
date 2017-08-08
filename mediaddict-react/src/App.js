@@ -13,7 +13,8 @@ class App extends Component {
             queryResult: [],
             searchValue: "",
             show: {},
-            episodeList: ['a']
+            episodeList: ['a'],
+            count: 0
         }
     }
 
@@ -43,7 +44,7 @@ class App extends Component {
         $.ajax({
             url: `http://api.tvmaze.com/shows/${this.state.show.id}/episodes`
         }).done((data) => {
-            data.forEach((episode) {
+            data.forEach((episode) => {
                 episode.watched = false;
             })
             this.setState({
@@ -92,35 +93,45 @@ class App extends Component {
 
     addShow(event, show, episodes) {
         event.preventDefault();
-        console.log(show);
         $.ajax({
             url: `http://localhost:8080/shows`,
             method: "POST",
             data: { name: show.name, premiereDate: show.premiered, network: show.network.name }
         }).done((data) => {
-            $.ajax({
-                url: "http://localhost:8080/api/"
-            }).done((data) => {
+            console.log(data.id);
+            this.addEpisode(event, this.state.episodeList[this.state.count], data.id)
+        });
+    }
+
+    addEpisode(event, episode, show_id) {
+        event.preventDefault();
+        $.ajax({
+            url: `http://localhost:8080/episodes`,
+            method: "POST",
+            data: { name: episode.name, season: episode.season, episodeNumber: episode.number, airDate: episode.airdate, watched: episode.watched, show_id: show_id }
+        }).done((data) => {
+            this.setState({
+                count: this.state.count + 1
+            })
+            if (this.state.count + 1 < this.state.episodeList.length) {
+                this.addEpisode(event, this.state.episodeList[this.state.count], show_id);
+            } else {
                 this.setState({
-                    shows: data,
-                    display: "all",
-                    shownShowId: null,
-                    value: "",
-                    queryResult: []
-                });
-            });
+                    count: 0
+                })
+            }
         });
     }
 
     updateWatched(event,index) {
         let tempList = this.state.episodeList;
-        if (templist[index].watched === true) {
-            templist[index].watched === false;
+        if (tempList[index].watched === true) {
+            tempList[index].watched = false;
         } else {
-            templist[index].watched === true;
+            tempList[index].watched = true;
         }
         this.setState({
-            episodeList: templist
+            episodeList: tempList
         })
     }
 
