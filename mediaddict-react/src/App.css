@@ -47,3 +47,8 @@
 .inline {
   display: inline;
 }
+
+#calendar {
+    width: 70vw;
+    margin: auto;
+}

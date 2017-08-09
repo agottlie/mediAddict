@@ -4,15 +4,17 @@ DROP TABLE IF EXISTS movies CASCADE;
 DROP TABLE IF EXISTS episodes CASCADE;
 
 CREATE TABLE users (
- 	id SERIAL PRIMARY KEY,
-  	password_digest VARCHAR NOT NULL,
-  	name VARCHAR(255)
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR NOT NULL,
+  email VARCHAR NOT NULL UNIQUE,
+  password_digest VARCHAR NOT NULL,
+  token VARCHAR NOT NULL
 );
 
 CREATE TABLE shows (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255),
-	premiereDate DATE,
+	premiereDate VARCHAR(255),
 	network VARCHAR(255),
 	user_id INTEGER REFERENCES users
 );
@@ -20,8 +22,7 @@ CREATE TABLE shows (
 CREATE TABLE movies (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255),
-	premiereDate DATE,
-	director VARCHAR(255),
+	premiereDate VARCHAR(255),
 	length INTEGER,
 	user_id INTEGER REFERENCES users
 );
@@ -31,8 +32,9 @@ CREATE TABLE episodes (
 	name VARCHAR(255),
 	season INTEGER,
 	episodeNumber INTEGER,
-	airDate DATE,
+	airDate VARCHAR(255),
 	watched BOOLEAN,
+	show_name VARCHAR(255),
 	user_id INTEGER REFERENCES users,
 	show_id INTEGER REFERENCES shows
 );

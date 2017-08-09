@@ -1,87 +1,43 @@
-//COPIED AND PASTED THIS PRETTY MUCH VERBATIM FROM WDI COURSE EXAMPLE
+const bcrypt = require('bcryptjs'),
+      User = require('../models/users');
 
-const passport = require('passport');
-const User = require('../models/users');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
+const Auth = {
 
-const passportInstance = passport.initialize();
-const passportSession = passport.session();
-
-function restrict(req, res, next) {
-    console.log(req.isAuthenticated());
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        res.redirect('/users/login');
+  // middleware that will be called on all requests
+  // it will look for a token, look for a user with that token,
+  // and attatch a user object to the request if there is one
+  authenticate: (req, res, next) => {
+    // get the token
+    const token = req.query.auth_token;
+    if(token){ // if there is a token
+      User // find the user with that token
+        .findByToken(token)
+        .then(data => { // if there is a user with that token
+          req.user = data; // set the user in the request
+          next(); // move on to the next action
+        })// if there is no user with that token
+        .catch(err => {
+          req.user = false; // set user to false
+          next() // move on to the next action
+        })
+    } else { // if there is no token
+      req.user = false; // no user
+      next(); // next action
     }
+  },
+
+  // middleware to restrict access to a route
+  // to only requests that have a valid user
+  restrict: (req, res, next) => {
+    if (req.user) { // if there is a user
+      next(); // move on to the next action
+    } else { // if there is no user
+      // send an error back
+      res.status(401).json({error: 'user not authorized'});
+    }
+  },
+
+
 }
 
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-
-passport.deserializeUser((userObj, done) => {
-    User
-        .findByName(userObj.name)
-        .then(user => {
-            done(null, user);
-        })
-        .catch(err => {
-            console.log('ERROR in deserializeUser:', err);
-            done(null, false);
-        });
-});
-
-// see router.post('/', ...) in controllers/users
-passport.use(
-    'local-signup',
-    new LocalStrategy({
-            // these are the names of the fields for email and password in
-            // the login form we'll be serving (see the view)
-            usernameField: 'user[name]',
-            passwordField: 'user[password]',
-            passReqToCallback: true
-        },
-        (req, name, password, done) => {
-            User
-                .create(req.body.user)
-                .then((user) => {
-                    return done(null, user);
-                })
-                .catch((err) => {
-                    console.log('ERROR:', err);
-                    return done(null, false);
-                });
-        })
-);
-
-passport.use(
-    'local-login',
-    new LocalStrategy({
-            usernameField: 'user[name]',
-            passwordField: 'user[password]',
-            passReqToCallback: true
-        },
-        (req, name, password, done) => {
-            User
-                .findByName(name)
-                .then((user) => {
-                    if (user) {
-                        // here we use bcrypt to figure out whether the user is logged in or not
-                        const isAuthed = bcrypt.compareSync(password, user.password_digest);
-                        console.log('is Authed:');
-                        console.log(isAuthed)
-                        if (isAuthed) {
-                            return done(null, user);
-                        } else {
-                            return done(null, false);
-                        }
-                    } else {
-                        return done(null, false);
-                    }
-                });
-        })
-);
-
-module.exports = { passportInstance, passportSession, restrict };
+module.exports = Auth;

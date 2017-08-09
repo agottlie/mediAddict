@@ -1,30 +1,20 @@
 const router = require('express').Router();
-const Show = require('../models/shows');
+const Movie = require('../models/movies');
 
 router.post('/', (req, res) => {
-    const { name, premiereDate, network, user_id } = req.body
+    const { name, premiereDate, length, user_id } = req.body
 
-    Show
-    	.create(name, premiereDate, network, user_id)
+    Movie
+    	.create(name, premiereDate, length, user_id)
         .then((data) => {
             res.json(data);
         })
         .catch(err => console.log('CONTROLLER POST ERROR: ', err));
 });
 
-router.get('/show/:id', (req, res) => {
-	const id = req.params.id;
-	Show
-		.findById(id)
-		.then((data) => {
-			res.json(data);
-		})
-		.catch(err => console.log('CONTROLLER GET ERROR: ', err));
-})
-
 router.get('/:id', (req, res) => {
 	const user_id = req.params.id;
-	Show
+	Movie
 		.findAll(user_id)
 		.then((data) => {
 			res.json(data);

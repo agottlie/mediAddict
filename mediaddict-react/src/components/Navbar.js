@@ -10,11 +10,12 @@ class Display extends Component {
             navDisplay = 
                 <div className="nav">
                     <ul>
+                        <li onClick={(e) => {this.props.setDisplay("profile")}}>Profile</li>
                         <li onClick={(e) => {this.props.setDisplay("calendar")}}>Calendar</li>
                         <li onClick={(e) => {this.props.setDisplay("addShow")}}>Add Show</li>
                         <li onClick={(e) => {this.props.setDisplay("addMovie")}}>Add Movie</li>
                         <li onClick={(e) => {this.props.setDisplay("leaderboard")}}>Leaderboard</li>
-                        <li onClick={(e) => {this.props.setDisplay("login")}}>Logout</li>
+                        <li onClick={(e) => {this.props.logout()}}>Logout</li>
                     </ul>
                 </div>;
         }
