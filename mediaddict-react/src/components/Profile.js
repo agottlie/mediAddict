@@ -6,6 +6,7 @@ class Profile extends Component {
 	componentDidMount() {
 	 	this.getShows();
         this.getMovies();
+        this.props.getEpisodesAndMovies('listWeek');
    	}
 
    	getShows() {
@@ -24,11 +25,21 @@ class Profile extends Component {
         });
     }
 
+    handleShowClick(index) {
+    	this.props.setCurrentShow(index);
+    	this.props.setDisplay("myShows");
+    }
+
+    handleMovieClick(index) {
+    	this.props.setCurrentMovie(index);
+    	this.props.setDisplay("myMovies");
+    }
+
     renderShows(){
         if (this.props.myShows[0]) {
 	        return this.props.myShows.map((show,i) => {
 	            return(
-	                <li key={i}>
+	                <li key={i} onClick={(e) => {this.handleShowClick(i)}}>
 	                    <h3>{show.name}</h3>
 	                </li>
 	            )
@@ -44,7 +55,7 @@ class Profile extends Component {
         if (this.props.myMovies[0]) {
 	        return this.props.myMovies.map((movie,i) => {
 	            return(
-	                <li key={i}>
+	                <li key={i} onClick={(e) => {this.handleMovieClick(i)}}>
 	                    <h3>{movie.name}</h3>
 	                </li>
 	            )
@@ -74,6 +85,7 @@ class Profile extends Component {
               
                 <div className="upcoming">
                 	<h2>UPCOMING</h2>
+                	<div id="calendar"></div>
                 </div>
             </div>
 	    );

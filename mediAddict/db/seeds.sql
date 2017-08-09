@@ -24,6 +24,7 @@ CREATE TABLE movies (
 	name VARCHAR(255),
 	premiereDate VARCHAR(255),
 	length INTEGER,
+	watched BOOLEAN,
 	user_id INTEGER REFERENCES users
 );
 

@@ -5,7 +5,7 @@ class MyShows extends Component {
 	render() {
 		return (
 	        <div>
-	        	TEST
+	        	{this.props.currentShow.name}
 	        </div>
 	    );
 	}

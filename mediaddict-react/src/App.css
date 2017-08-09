@@ -49,6 +49,10 @@
 }
 
 #calendar {
-    width: 70vw;
+    width: 100%;
     margin: auto;
+}
+
+.upcoming {
+  width: 25vw;
 }

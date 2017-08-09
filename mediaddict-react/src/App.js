@@ -22,7 +22,9 @@ class App extends Component {
             url: 'http://localhost:8080',
             myShows: [],
             myMovies: [],
-            events: []
+            events: [],
+            currentShow: null,
+            currentMovie: null
         }
     }
 
@@ -86,6 +88,18 @@ class App extends Component {
             display: newValue,
             queryResult: [],
             searchValue: ""
+        })
+    }
+
+    setCurrentShow(index) {
+        this.setState({
+            currentShow: this.state.myShows[index]
+        })
+    }
+
+    setCurrentMovie(index) {
+        this.setState({
+            currentMovie: this.state.myMovies[index]
         })
     }
 
@@ -240,6 +254,10 @@ class App extends Component {
                     url={this.state.url}
                     myShows={this.state.myShows}
                     myMovies={this.state.myMovies}
+                    currentShow={this.state.currentShow}
+                    currentMovie={this.state.currentMovie}
+                    setCurrentShow={this.setCurrentShow.bind(this)}
+                    setCurrentMovie={this.setCurrentMovie.bind(this)}
                 />
             </div>
           )

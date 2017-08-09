@@ -7,8 +7,58 @@ import Leaderboard from './Leaderboard';
 import Profile from './Profile';
 import MyMovies from './MyMovies';
 import MyShows from './MyShows';
+import $ from 'jquery';
+import 'fullcalendar';
+import '../css/fullcalendar.css'
 
 class Display extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            events: []           
+        }
+    }
+
+    getEpisodesAndMovies(view) {
+        $.ajax({
+            url: `${this.props.url}/episodes/${this.props.user.id}`
+        }).done((data) => {
+            let episodes = [];
+            data.forEach((episode) => {
+                episodes.push({ title: episode.show_name, start: episode.airdate, color: "green" });
+            })
+            this.setState({
+                events: episodes
+            });
+            $.ajax({
+                url: `${this.props.url}/movies/${this.props.user.id}`
+            }).done((data) => {
+                let movies = this.state.events;
+                data.forEach((movie) => {
+                    movies.push({ title: movie.name, start: movie.premieredate, color: "red" });
+                })
+                this.setState({
+                    events: movies
+                }, function complete() {
+                    let right;
+                    if (view === "month") {
+                        right = 'month,agendaWeek,agendaDay'
+                    } else {
+                        right = false;
+                    }
+                    $('#calendar').fullCalendar({
+                        defaultView: view,
+                        header: {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: right
+                        },
+                        events: this.state.events
+                    });
+                });
+            });
+        });
+    }
 
     render() {
         let displayElement;
@@ -24,14 +74,16 @@ class Display extends Component {
                     setShows={this.props.setShows}
                     setMovies={this.props.setMovies}
                     setDisplay={this.props.setDisplay}
+                    setCurrentShow={this.props.setCurrentShow}
+                    setCurrentMovie={this.props.setCurrentMovie}
+                    getEpisodesAndMovies={this.getEpisodesAndMovies.bind(this)}
                 />;
 
 //---------------------CALENDAR VIEW--------------------------------
         } else if (this.props.display === "calendar") {
             displayElement = 
-                <Calendar 
-                    user={this.props.user}
-                    url={this.props.url}
+                <Calendar
+                    getEpisodesAndMovies={this.getEpisodesAndMovies.bind(this)}
                 />;
 
 //---------------------ADD SHOW VIEW--------------------------------
@@ -75,12 +127,16 @@ class Display extends Component {
 //---------------------MY SHOWS VIEW--------------------------------
         } else if (this.props.display === "myShows") {
             displayElement = 
-                <MyShows />;
+                <MyShows 
+                    currentShow={this.props.currentShow}
+                />;
 
 //---------------------MY MOVIES VIEW--------------------------------
         } else if (this.props.display === "myMovies") {
             displayElement = 
-                <MyMovies />;
+                <MyMovies 
+                    currentMovie={this.props.currentMovie}
+                />;
 
         }
 
