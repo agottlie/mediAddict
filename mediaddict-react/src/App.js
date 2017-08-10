@@ -24,7 +24,8 @@ class App extends Component {
             myMovies: [],
             events: [],
             currentShow: null,
-            currentMovie: null
+            currentMovie: null,
+            myScore: 0
         }
     }
 
@@ -94,7 +95,6 @@ class App extends Component {
 
     setCurrentShow(e, index) {
         e.preventDefault();
-        console.log(this.state.myShows[index]);
         this.setState({
             currentShow: this.state.myShows[index]
         }, function complete() { this.setCurrentEpisodes() });
@@ -104,12 +104,9 @@ class App extends Component {
         $.ajax({
             url: `${this.state.url}/episodes/show/${this.state.currentShow.id}`
         }).done((data) => {
-            console.log(data);
             this.setState({
                 episodeList: data
-                
             }, function complete() {
-                console.log("HI");
                 this.setState({
                     display: "myShows"
                 })
@@ -154,23 +151,6 @@ class App extends Component {
         })
     }
 
-    addShow(event, show, episodes) {
-        event.preventDefault();
-        let network;
-        if (show.network) {
-            network = show.network.name;
-        } else {
-            network = show.webChannel.name;
-        }
-        $.ajax({
-            url: `${this.state.url}/shows`,
-            method: "POST",
-            data: { name: show.name, premiereDate: show.premiered, network: network, user_id: this.state.user.id }
-        }).done((data) => {
-            this.addEpisode(event, this.state.episodeList[this.state.count], data.id, show.name)
-        });
-    }
-
     addMovie(event, movie) {
         event.preventDefault();
         $.ajax({
@@ -188,13 +168,46 @@ class App extends Component {
         });
     }
 
+    addShow(event) {
+        event.preventDefault();
+        let network;
+        if (this.state.show.network) {
+            network = this.state.show.network.name;
+        } else {
+            network = this.state.show.webChannel.name;
+        }
+        $.ajax({
+            url: `${this.state.url}/shows`,
+            method: "POST",
+            data: { name: this.state.show.name, premiereDate: this.state.show.premiered, network: network, user_id: this.state.user.id }
+        }).done((data) => {
+            console.log(data);
+            this.updateWatched(data, event);
+        });
+    }
+
+    updateWatched(data, event) {
+        let tempList = this.state.episodeList;
+        this.state.episodeList.forEach((episode,index) => {
+            let ep = "#" + episode.id;
+            if ($(ep).eq(0).attr('checked') === "checked") {
+                tempList[index].watched = true;
+            } else {
+                tempList[index].watched = false;
+            }
+        })
+        this.setState({
+            episodeList: tempList
+        }, function complete() { this.addEpisode(event, this.state.episodeList[this.state.count], data.id, this.state.show.name) })
+    }
+
     addEpisode(event, episode, show_id, show_name) {
         event.preventDefault();
         let airdate;
         if (episode.airtime) {
             airdate = episode.airdate + "T" + episode.airtime;
         } else {
-            airdate = episode.airstamp;
+            airdate = episode.airstamp.substr(0, episode.airstamp.length-9);
         }
         $.ajax({
             url: `${this.state.url}/episodes`,
@@ -204,7 +217,7 @@ class App extends Component {
             this.setState({
                 count: this.state.count + 1
             })
-            if (this.state.count + 1 < this.state.episodeList.length) {
+            if (this.state.count < this.state.episodeList.length) {
                 this.addEpisode(event, this.state.episodeList[this.state.count], show_id, show_name);
             } else {
                 this.setState({
@@ -213,21 +226,6 @@ class App extends Component {
                 })
             }
         });
-    }
-
-    updateWatched(event, index, episode_id) {
-        let ep = "#" + episode_id;
-        let tempList = this.state.episodeList;
-        if (tempList[index].watched === true) {
-            tempList[index].watched = false;
-            $(ep).eq(0).attr('checked', false);
-        } else {
-            tempList[index].watched = true;
-            $(ep).eq(0).attr('checked', true);
-        }
-        this.setState({
-            episodeList: tempList
-        })
     }
 
     renderView() {
@@ -253,6 +251,7 @@ class App extends Component {
                     setDisplay={this.setDisplay.bind(this)}
                     logout={this.logout.bind(this)}
                     user={this.state.user}
+                    myScore={this.state.myScore}
                   />
                   <Display
                     display={this.state.display}
@@ -278,6 +277,7 @@ class App extends Component {
                     currentMovie={this.state.currentMovie}
                     setCurrentShow={this.setCurrentShow.bind(this)}
                     setCurrentMovie={this.setCurrentMovie.bind(this)}
+                    myScore={this.state.myScore}
                 />
             </div>
             )

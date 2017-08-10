@@ -2,14 +2,27 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 
 class Episodes extends Component {
-	checkSeason(e, season) {
+	updateCheck(index, episode_id) {
+        let ep = "#" + episode_id;
+        if ($(ep).attr('checked') === "checked") {
+            $(ep).prop('checked', false);
+            $(ep).attr('checked', false);
+        } else {
+            $(ep).prop('checked', true);
+            $(ep).attr('checked', true);
+        }
+    }
+
+    checkSeason(e, season) {
         let thisSeasonHeader = ".seasonHeader" + season;
         let thisSeason = ".season" + season;
         if ($(thisSeasonHeader).eq(0).attr('checked') === "checked") {
             $(thisSeason).attr('checked', false);
+            $(thisSeason).prop('checked', false);
             $(thisSeasonHeader).eq(0).attr('checked', false);
         } else {
             $(thisSeason).attr('checked', true);
+            $(thisSeason).prop('checked', true);
             $(thisSeasonHeader).eq(0).attr('checked', true);
         }     
     }
@@ -41,7 +54,7 @@ class Episodes extends Component {
                                 value={episode.id}
                                 id={episode.id}
                                 className={"season" + j}
-                                onChange={(e) => {this.props.updateWatched(e, i, episode.id)}}
+                                onClick={(e) => {this.updateCheck(i, episode.id)}}
                             />
                             <h5 >Aired: {episode.airdate}</h5>
                         </div>);
@@ -52,7 +65,7 @@ class Episodes extends Component {
         return(
             <div>
                 {episodeDisplay}
-                <button onClick={(e) =>{this.props.addShow(e, this.props.show, this.props.episodeList)}}>Add</button>
+                <button onClick={(e) =>{this.props.addShow(e)}}>Add</button>
             </div>
         )
     }

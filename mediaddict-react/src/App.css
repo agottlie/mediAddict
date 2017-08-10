@@ -1,51 +1,51 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
 }
 
 .App-intro {
-  font-size: large;
+    font-size: large;
 }
 
 .nav {
-  position: fixed;
-  height: 5vh;
-  background-color: black;
-  width: 100vw;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+    position: fixed;
+    height: 8vh;
+    background-color: black;
+    width: 100vw;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .nav>ul>li {
-  display: inline;
-  margin: 0 10px;
+    display: inline;
+    margin: 0 10px;
 }
 
 .container {
-  padding-top: 10vh;
+    padding-top: 10vh;
 }
 
 .profile {
-  display: flex;
-  align-items: row;
-  justify-content: space-around;
+    display: flex;
+    align-items: row;
+    justify-content: space-around;
 }
 
 .inline {
-  display: inline;
+    display: inline;
 }
 
 #calendar {
@@ -54,5 +54,15 @@
 }
 
 .upcoming {
-  width: 25vw;
+    width: 25vw;
+}
+
+.points>h4,
+.points>p {
+    margin: 0;
+}
+
+.points {
+  position: absolute;
+  left: 5vw;
 }
