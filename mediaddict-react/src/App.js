@@ -17,7 +17,7 @@ class App extends Component {
             queryResult: [],
             searchValue: "",
             show: {},
-            episodeList: ['a'],
+            episodeList: [],
             count: 0,
             url: 'http://localhost:8080',
             myShows: [],
@@ -37,31 +37,32 @@ class App extends Component {
         const token = Cookies.get('token');
 
         // if there is a token
-        if(token && token !== ''){
-          // send a request to our API to validate the user
-          axios.get(`${this.state.url}/users/validate`, {
-            // include the token as a parameter
-            params: {auth_token: token}})
-            .then(res => { // the response will be the user
-              // set the user in the state, and change the mode to content
-              this.setState({user: res.data, mode: 'content', display: 'profile'});
-            })
-            .catch(err => { // if there is an error
-              Cookies.set('token', '') // take away the cookie
-              // change the state so that there is no user and render the auth
-              this.setState({user: false, mode: 'auth'});
-            })
+        if (token && token !== '') {
+            // send a request to our API to validate the user
+            axios.get(`${this.state.url}/users/validate`, {
+                    // include the token as a parameter
+                    params: { auth_token: token }
+                })
+                .then(res => { // the response will be the user
+                    // set the user in the state, and change the mode to content
+                    this.setState({ user: res.data, mode: 'content', display: 'profile' });
+                })
+                .catch(err => { // if there is an error
+                    Cookies.set('token', '') // take away the cookie
+                    // change the state so that there is no user and render the auth
+                    this.setState({ user: false, mode: 'auth' });
+                })
         } else { // if there is no token
-          // we should render the auth forms
-          this.setState({mode: 'auth'});
+            // we should render the auth forms
+            this.setState({ mode: 'auth' });
         }
     }
 
-    setUser(user){
+    setUser(user) {
         // set a cookie with the user's token
         Cookies.set('token', user.token);
         // set state to have the user and the mode to content
-        this.setState({user: user, mode: 'content'});
+        this.setState({ user: user, mode: 'content' });
     }
 
     setShows(newValue) {
@@ -76,11 +77,11 @@ class App extends Component {
         })
     }
 
-    logout(){
+    logout() {
         // take away the cookie
         Cookies.set('token', '');
         // remove the user and set the mode to auth
-        this.setState({user: false, mode: 'auth'});
+        this.setState({ user: false, mode: 'auth' });
     }
 
     setDisplay(newValue) {
@@ -91,10 +92,29 @@ class App extends Component {
         })
     }
 
-    setCurrentShow(index) {
+    setCurrentShow(e, index) {
+        e.preventDefault();
+        console.log(this.state.myShows[index]);
         this.setState({
             currentShow: this.state.myShows[index]
-        })
+        }, function complete() { this.setCurrentEpisodes() });
+    }
+
+    setCurrentEpisodes() {
+        $.ajax({
+            url: `${this.state.url}/episodes/show/${this.state.currentShow.id}`
+        }).done((data) => {
+            console.log(data);
+            this.setState({
+                episodeList: data
+                
+            }, function complete() {
+                console.log("HI");
+                this.setState({
+                    display: "myShows"
+                })
+            })
+        });
     }
 
     setCurrentMovie(index) {
@@ -106,9 +126,8 @@ class App extends Component {
     setShow(e, newValue) {
         e.preventDefault();
         this.setState({
-            show: newValue,
-            display: "episodes"
-        }, function complete() {this.setEpisodes()});
+            show: newValue
+        }, function complete() { this.setEpisodes() });
     }
 
     setEpisodes() {
@@ -120,6 +139,7 @@ class App extends Component {
             })
             this.setState({
                 episodeList: data,
+                display: "episodes"
             });
         });
     }
@@ -195,7 +215,7 @@ class App extends Component {
         });
     }
 
-    updateWatched(event,index,episode_id) {
+    updateWatched(event, index, episode_id) {
         let ep = "#" + episode_id;
         let tempList = this.state.episodeList;
         if (tempList[index].watched === true) {
@@ -210,24 +230,24 @@ class App extends Component {
         })
     }
 
-    renderView(){
-        if(this.state.mode === 'loading'){
-          return(
-            <div className="loading">
+    renderView() {
+        if (this.state.mode === 'loading') {
+            return (
+                <div className="loading">
               <img src="https://s-media-cache-ak0.pinimg.com/originals/8b/a8/ce/8ba8ce24910d7b2f4c147359a82d50ef.gif"
                 alt="loading" />
             </div>
-          )
-        } else if(this.state.mode === 'auth') {
-          return (
-            <UserAuth
+            )
+        } else if (this.state.mode === 'auth') {
+            return (
+                <UserAuth
               setUser={this.setUser.bind(this)}
               url={this.state.url}
             />
-          )
+            )
         } else {
-          return (
-            <div>
+            return (
+                <div>
                 <Navbar 
                     display = {this.state.display}
                     setDisplay={this.setDisplay.bind(this)}
@@ -260,7 +280,7 @@ class App extends Component {
                     setCurrentMovie={this.setCurrentMovie.bind(this)}
                 />
             </div>
-          )
+            )
         }
     }
 

@@ -12,6 +12,16 @@ router.post('/', (req, res) => {
         .catch(err => console.log('CONTROLLER POST ERROR: ', err));
 });
 
+router.get('/show/:id', (req, res) => {
+	const show_id = req.params.id;
+	Episode
+		.findAllForShow(show_id)
+		.then((data) => {
+			res.json(data);
+		})
+		.catch(err => console.log('CONTROLLER GET ERROR: ', err));
+})
+
 router.get('/:id', (req, res) => {
 	const user_id = req.params.id;
 	Episode

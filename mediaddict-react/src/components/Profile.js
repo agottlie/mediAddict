@@ -25,9 +25,8 @@ class Profile extends Component {
         });
     }
 
-    handleShowClick(index) {
-    	this.props.setCurrentShow(index);
-    	this.props.setDisplay("myShows");
+    handleShowClick(e, index) {
+    	this.props.setCurrentShow(e, index);
     }
 
     handleMovieClick(index) {
@@ -39,7 +38,7 @@ class Profile extends Component {
         if (this.props.myShows[0]) {
 	        return this.props.myShows.map((show,i) => {
 	            return(
-	                <li key={i} onClick={(e) => {this.handleShowClick(i)}}>
+	                <li key={i} onClick={(e) => {this.handleShowClick(e, i)}}>
 	                    <h3>{show.name}</h3>
 	                </li>
 	            )

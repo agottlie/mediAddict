@@ -4,6 +4,10 @@ function findAll(id) {
 	return db.manyOrNone('SELECT * FROM episodes WHERE user_id = $1', [id])
 };
 
+function findAllForShow(id) { 
+	return db.manyOrNone('SELECT * FROM episodes WHERE show_id = $1', [id])
+};
+
 function findById(id) {
 	return db.one(`SELECT * FROM shows WHERE id = $1`, [id])
 };
@@ -18,4 +22,4 @@ function destroy(id) {
 };
 
 
-module.exports = {findAll, findById, create, destroy };
+module.exports = {findAll, findAllForShow, findById, create, destroy };

@@ -129,6 +129,7 @@ class Display extends Component {
             displayElement = 
                 <MyShows 
                     currentShow={this.props.currentShow}
+                    episodeList={this.props.episodeList}
                 />;
 
 //---------------------MY MOVIES VIEW--------------------------------
