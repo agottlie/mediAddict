@@ -11,17 +11,42 @@ class MyMovies extends Component {
 	            method: "PUT",
 	            data: {watched: true, score: this.props.user.score + 10, user_id: this.props.user.id}
 	        }).done((data) => {
-	            this.props.setScore(10);
+	            let url = "https://api.nytimes.com/svc/movies/v2/reviews/search.json";
+				url += '?' + $.param({
+				    'api-key': "39e33badfa5f41b2a75fc660a36da0b9",
+				    'query': this.props.currentMovie.name
+				});
+	            $.ajax({
+	                url: url,
+	                method: "GET"         
+	            }).done((data) => {
+	                console.log(data);
+	                $.ajax({
+		                url: `${this.props.url}/movies/recap`,
+		                method: "PUT",
+		                data: {
+		                    id: this.props.currentMovie.id,
+		                    recap_url: data.results[0].link.url
+		                }
+		            }).done((data) => {
+			            this.props.setScore(10);
+			        })
+			    });
 	        });
     	}	
 	}
+
 
 	render() {
 		let status;
 		if (new Date() < new Date(this.props.currentMovie.premieredate)) {
 			status = <h2>Status: Upcoming</h2>;
 		} else if (this.props.currentMovie.watched === true) {
-			status = <h2>Status: Watched</h2>;
+			status = 
+				<div>
+					<h2>Status: Watched</h2>
+					<a href={this.props.currentMovie.recap_url}>Read Review</a>
+				</div>;
 		} else {
 			status = 
 				<div>

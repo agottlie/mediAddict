@@ -101,10 +101,6 @@ class App extends Component {
         })
     }
 
-    setRecap(recap, index) {
-        this.setState
-    }
-
     setCurrentShow(e, index) {
         e.preventDefault();
         this.setState({
@@ -165,6 +161,30 @@ class App extends Component {
                 display: "episodes"
             });
         });
+    }
+
+    setRecaps() {
+        this.state.episodeList.forEach((episode, index) => {
+            console.log(episode);
+            if (episode.watched && episode.recap_url===null) {
+                $.ajax({
+                    url: `${this.state.url}/episodes/scrape`,
+                    method: "PUT",
+                    data: {
+                        name: this.state.episodeList[index].show_name.replace(/\s/g, "-").toLowerCase(),
+                        season: this.state.episodeList[index].season,
+                        episodeNumber: this.state.episodeList[index].episodenumber,
+                        id: this.state.episodeList[index].id
+                    }
+                }).done((data) => {
+                    let tempList = this.state.episodeList;
+                    tempList[index].recap_url = data.recap_url;
+                    this.setState({
+                        episodeList: tempList
+                    })
+                })
+            }    
+        })
     }
 
     handleNameChange(event) {
@@ -305,6 +325,7 @@ class App extends Component {
                     setScore={this.setScore.bind(this)}
                     leaders={this.state.leaders}
                     setLeaders={this.setLeaders.bind(this)}
+                    setRecaps={this.setRecaps.bind(this)}
                 />
             </div>
             )

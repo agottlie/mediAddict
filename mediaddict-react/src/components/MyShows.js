@@ -3,6 +3,10 @@ import $ from 'jquery';
 
 class MyShows extends Component {
 
+    componentDidMount() {
+        this.props.setRecaps()
+    }
+
     updateWatched(index) {
         $.ajax({
             url: `${this.props.url}/episodes/${this.props.episodeList[index].id}`,
@@ -19,7 +23,6 @@ class MyShows extends Component {
                     id: this.props.episodeList[index].id
                 }
             }).done((data) => {
-                console.log(data);
                 this.props.setScore(5);
             })
         });
