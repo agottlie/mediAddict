@@ -25,5 +25,9 @@ function update(watched, id) {
 	return db.one('UPDATE episodes SET watched=$1 WHERE id=$2 RETURNING *', [watched,id])
 }
 
+function addRecap(recap_url, id) {
+	return db.one('UPDATE episodes SET recap_url=$1 WHERE id=$2 RETURNING *', [recap_url,id])	
+}
 
-module.exports = {findAll, findAllForShow, findById, create, destroy, update };
+
+module.exports = {findAll, findAllForShow, findById, create, destroy, update, addRecap };

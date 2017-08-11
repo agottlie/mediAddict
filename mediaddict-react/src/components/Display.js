@@ -139,6 +139,7 @@ class Display extends Component {
                     user={this.props.user}
                     url={this.props.url}
                     setScore={this.props.setScore}
+                    setRecap={this.props.setRecap}
                 />;
 
 //---------------------MY MOVIES VIEW--------------------------------

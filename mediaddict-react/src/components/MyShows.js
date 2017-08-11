@@ -9,9 +9,20 @@ class MyShows extends Component {
             method: "PUT",
             data: {watched: true, score: this.props.user.score + 5, user_id: this.props.user.id}
         }).done((data) => {
-            this.props.setScore(5);
+            $.ajax({
+                url: `${this.props.url}/episodes/scrape`,
+                method: "PUT",
+                data: {
+                    name: this.props.episodeList[index].show_name.replace(/\s/g, "-").toLowerCase(),
+                    season: this.props.episodeList[index].season,
+                    episodeNumber: this.props.episodeList[index].episodenumber,
+                    id: this.props.episodeList[index].id
+                }
+            }).done((data) => {
+                console.log(data);
+                this.props.setScore(5);
+            })
         });
-
     }
 
     render() {
@@ -48,6 +59,7 @@ class MyShows extends Component {
                         <div key={i}>
                             <h3 className="inline">Episode {episode.season}.{episode.episodenumber}: {episode.name}</h3>
                             <h5 >Aired: {episode.airdate.substr(0, episode.airdate.length-6)}</h5>
+                            <a href={episode.recap_url}>Recap</a>
                         </div>
                     );
                 } else if (episode.season === j && !episode.watched && d>=airdate ) {

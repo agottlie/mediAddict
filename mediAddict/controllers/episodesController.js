@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const Episode = require('../models/episodes');
 const User = require('../models/users');
-const Leaderboard = require('../models/leaderboard')
+const Leaderboard = require('../models/leaderboard');
+var request = require('request');
+var cheerio = require('cheerio');
 
 router.post('/', (req, res) => {
     const { name, season, episodeNumber, airDate, watched, show_id, user_id, show_name } = req.body
@@ -32,6 +34,35 @@ router.get('/:id', (req, res) => {
 			res.json(data);
 		})
 		.catch(err => console.log('CONTROLLER GET ERROR: ', err));
+})
+
+router.put('/scrape', (req,res) => {
+    const name = req.body.name;
+    const season = req.body.season;
+    const episodeNumber = req.body.episodeNumber;
+    const id = req.body.id;
+
+    const site = `http://www.avclub.com/tv/${name}/?season=${season}`;
+    let recap = ""
+    request(site, function(error, response, html){
+        if(!error){
+            const $ = cheerio.load(html);
+            let ep = "Episode "+ episodeNumber;
+
+            $('.article-list').filter(function(){     
+                recap = "http://www.avclub.com" + $(`.episode:contains("${ep}")`).parent().parent().parent().parent().find('a').attr('href');
+            })
+
+            Episode
+                .addRecap(recap, id)
+            .then((data) => {
+                res.json(data);
+            })
+            .catch(err => console.log('CONTROLLER GET ERROR: ', err));
+
+        }
+    })
+
 })
 
 router.put('/:id', (req, res) => {

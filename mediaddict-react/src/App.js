@@ -101,6 +101,10 @@ class App extends Component {
         })
     }
 
+    setRecap(recap, index) {
+        this.setState
+    }
+
     setCurrentShow(e, index) {
         e.preventDefault();
         this.setState({

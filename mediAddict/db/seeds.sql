@@ -38,6 +38,7 @@ CREATE TABLE episodes (
 	airDate VARCHAR(255),
 	watched BOOLEAN,
 	show_name VARCHAR(255),
+	recap_url VARCHAR(255),
 	user_id INTEGER REFERENCES users,
 	show_id INTEGER REFERENCES shows
 );
