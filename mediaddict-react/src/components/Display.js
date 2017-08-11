@@ -125,7 +125,10 @@ class Display extends Component {
 //---------------------LEADERBOARD VIEW--------------------------------
         } else if (this.props.display === "leaderboard") {
             displayElement = 
-                <Leaderboard />;
+                <Leaderboard 
+                    setLeaders={this.props.setLeaders}
+                    leaders={this.props.leaders}
+                />;
 
 //---------------------MY SHOWS VIEW--------------------------------
         } else if (this.props.display === "myShows") {

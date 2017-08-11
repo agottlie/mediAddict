@@ -24,7 +24,8 @@ class App extends Component {
             myMovies: [],
             events: [],
             currentShow: null,
-            currentMovie: null
+            currentMovie: null,
+            leaders: []
         }
     }
 
@@ -125,6 +126,20 @@ class App extends Component {
         this.setState({
             currentMovie: this.state.myMovies[index]
         })
+    }
+
+    setLeaders() {
+        $.ajax({
+            url: `${this.state.url}/leaderboard`
+        }).done((data) => {
+            this.setState({
+                leaders: data
+            }, function complete() {
+                this.setState({
+                    display: "leaderboard"
+                })
+            })
+        });
     }
 
     setShow(e, newValue) {
@@ -284,6 +299,8 @@ class App extends Component {
                     setCurrentShow={this.setCurrentShow.bind(this)}
                     setCurrentMovie={this.setCurrentMovie.bind(this)}
                     setScore={this.setScore.bind(this)}
+                    leaders={this.state.leaders}
+                    setLeaders={this.setLeaders.bind(this)}
                 />
             </div>
             )

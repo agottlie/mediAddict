@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Episode = require('../models/episodes');
-const User = require('../models/users')
+const User = require('../models/users');
+const Leaderboard = require('../models/leaderboard')
 
 router.post('/', (req, res) => {
     const { name, season, episodeNumber, airDate, watched, show_id, user_id, show_name } = req.body
@@ -37,11 +38,18 @@ router.put('/:id', (req, res) => {
     const id = req.params.id;
     const watched = req.body.watched;
     const score = req.body.score;
+    const user_id = req.body.user_id;
 
     Episode
         .update(watched, id)
         .then(data => {
-          res.json(data)
+            return User.update(score, user_id)
+        })
+        .then((data) => {
+            return Leaderboard.update(score, user_id)
+        })
+        .then((data) => {
+            res.json(data)
         })
         .catch(err => console.log('ERROR: ', err));
 });

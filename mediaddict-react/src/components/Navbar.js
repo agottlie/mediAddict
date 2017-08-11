@@ -10,7 +10,7 @@ class Display extends Component {
             navDisplay = 
                 <div className="nav">
                     <div className='points'>
-                        <h4>My Points</h4>
+                        <h4>{this.props.user.name}'s Points</h4>
                         <p>{this.props.user.score}</p>
                     </div>
                     <ul>

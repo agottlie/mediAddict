@@ -1,6 +1,7 @@
 const User = require('../models/users'),
       router = require('express').Router(),
-      Auth = require('../services/auth');
+      Auth = require('../services/auth'),
+      Leaderboard = require('../models/leaderboard');
 
 // route that validates the user
 // basically a way to ping the server to make sure the token cookie is correct
@@ -72,6 +73,10 @@ router.post('/', (req, res) => {
     User
       .create(name, email, 0, password)
       .then(data => { // once we create the user
+        console.log(data);
+        return Leaderboard.create(data.name, data.id)
+      })
+      .then(data => {
         res.json(data)
       })
       .catch(err => console.log(err))
