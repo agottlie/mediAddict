@@ -9,7 +9,7 @@ function findAllForShow(id) {
 };
 
 function findById(id) {
-	return db.one(`SELECT * FROM shows WHERE id = $1`, [id])
+	return db.one(`SELECT * FROM episodes WHERE id = $1`, [id])
 };
 
 function create(name, season, episodeNumber, airDate, watched, show_id, user_id, show_name) {
@@ -18,8 +18,12 @@ function create(name, season, episodeNumber, airDate, watched, show_id, user_id,
 };
 
 function destroy(id) {
-	return db.none('DELETE FROM shows WHERE id = $1', [id])
+	return db.none('DELETE FROM episodes WHERE id = $1', [id])
 };
 
+function update(watched, id) {
+	return db.one('UPDATE episodes SET watched=$1 WHERE id=$2 RETURNING *', [watched,id])
+}
 
-module.exports = {findAll, findAllForShow, findById, create, destroy };
+
+module.exports = {findAll, findAllForShow, findById, create, destroy, update };

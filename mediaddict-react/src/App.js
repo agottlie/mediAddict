@@ -24,8 +24,7 @@ class App extends Component {
             myMovies: [],
             events: [],
             currentShow: null,
-            currentMovie: null,
-            myScore: 0
+            currentMovie: null
         }
     }
 
@@ -76,6 +75,14 @@ class App extends Component {
         this.setState({
             myMovies: newValue
         })
+    }
+
+    setScore(newValue) {
+        let tempUser = this.state.user;
+        tempUser.score += newValue;
+        this.setState({
+            user: tempUser
+        }, function complete() {this.setDisplay("profile")})
     }
 
     logout() {
@@ -181,7 +188,6 @@ class App extends Component {
             method: "POST",
             data: { name: this.state.show.name, premiereDate: this.state.show.premiered, network: network, user_id: this.state.user.id }
         }).done((data) => {
-            console.log(data);
             this.updateWatched(data, event);
         });
     }
@@ -277,7 +283,7 @@ class App extends Component {
                     currentMovie={this.state.currentMovie}
                     setCurrentShow={this.setCurrentShow.bind(this)}
                     setCurrentMovie={this.setCurrentMovie.bind(this)}
-                    myScore={this.state.myScore}
+                    setScore={this.setScore.bind(this)}
                 />
             </div>
             )

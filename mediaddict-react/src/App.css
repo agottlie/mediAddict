@@ -27,6 +27,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    z-index: 30;
 }
 
 .nav>ul>li {
@@ -65,4 +66,15 @@
 .points {
   position: absolute;
   left: 5vw;
+}
+
+.episodes {
+    display: flex;
+    align-items: row;
+    justify-content: space-around;
+}
+
+.status {
+    font-size: 12px;
+    display: inline;
 }

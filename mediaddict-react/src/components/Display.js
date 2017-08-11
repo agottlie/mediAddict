@@ -15,7 +15,8 @@ class Display extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            events: []           
+            events: [],
+            episodes: []         
         }
     }
 
@@ -28,7 +29,8 @@ class Display extends Component {
                 episodes.push({ title: episode.show_name, start: episode.airdate, color: "green" });
             })
             this.setState({
-                events: episodes
+                events: episodes,
+                episodes: data
             });
             $.ajax({
                 url: `${this.props.url}/movies/${this.props.user.id}`
@@ -77,6 +79,7 @@ class Display extends Component {
                     setCurrentShow={this.props.setCurrentShow}
                     setCurrentMovie={this.props.setCurrentMovie}
                     getEpisodesAndMovies={this.getEpisodesAndMovies.bind(this)}
+                    episodes={this.state.episodes}
                 />;
 
 //---------------------CALENDAR VIEW--------------------------------
@@ -130,6 +133,9 @@ class Display extends Component {
                 <MyShows 
                     currentShow={this.props.currentShow}
                     episodeList={this.props.episodeList}
+                    user={this.props.user}
+                    url={this.props.url}
+                    setScore={this.props.setScore}
                 />;
 
 //---------------------MY MOVIES VIEW--------------------------------
@@ -137,6 +143,10 @@ class Display extends Component {
             displayElement = 
                 <MyMovies 
                     currentMovie={this.props.currentMovie}
+                    url={this.props.url}
+                    setDisplay={this.props.setDisplay}
+                    user={this.props.user}
+                    setScore={this.props.setScore}
                 />;
 
         }

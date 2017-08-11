@@ -11,7 +11,8 @@ router.get('/validate', Auth.restrict, (req, res)=>{
     name: req.user.name,
     email: req.user.email,
     token: req.user.token,
-    id: req.user.id
+    id: req.user.id,
+    score: req.user.score
   })
 })
 
@@ -69,7 +70,7 @@ router.post('/', (req, res) => {
   // if there are no errors, create the user!
   if(!error){
     User
-      .create(name, email, password)
+      .create(name, email, 0, password)
       .then(data => { // once we create the user
         res.json(data)
       })
@@ -78,6 +79,18 @@ router.post('/', (req, res) => {
     // send back a 400 (bad request) status with the errors
     res.status(400).json({errors: errors})
   }
+});
+
+router.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const score = req.body.score;
+
+    User
+        .update(score, id)
+        .then(data => {
+          res.json(data)
+        })
+        .catch(err => console.log('ERROR: ', err));
 });
 
 module.exports = router;

@@ -14,7 +14,8 @@ router.post('/', (req, res)=>{
             email: data.email,
             name: data.name,
             token: data.token,
-            id: data.id
+            id: data.id,
+            score: data.score
           })
         } else { // if the password does not match, send back an error
           res.status(401).json({ errors: {password: 'Incorrect Password'} });
