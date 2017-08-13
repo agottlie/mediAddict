@@ -78,3 +78,33 @@
     font-size: 12px;
     display: inline;
 }
+
+.innerComment {
+    position: relative;
+    top: 15vh;
+    left: 15vw;
+    border: 1px solid black;
+    background-color: white;
+    width: 70vw;
+    height: 70vh;
+    overflow: scroll;
+}
+
+.comment {
+    display: none;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 7vh;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.close {
+    position: fixed;
+    top: 23vh;
+    left: 15.4vw;
+    border: 1px solid black;
+    cursor: pointer;
+    padding: 2px;
+}

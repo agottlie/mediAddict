@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const Show = require('../models/shows');
+const Episode = require('../models/episodes')
 
 router.post('/', (req, res) => {
-    const { name, premiereDate, network, user_id } = req.body
+    const { name, premiereDate, network, user_id, maze_id } = req.body
 
     Show
-    	.create(name, premiereDate, network, user_id)
+    	.create(name, premiereDate, network, user_id, maze_id)
         .then((data) => {
             res.json(data);
         })
@@ -30,6 +31,20 @@ router.get('/:id', (req, res) => {
 			res.json(data);
 		})
 		.catch(err => console.log('CONTROLLER GET ERROR: ', err));
+})
+
+router.delete('/:id', (req,res) => {
+    const id = req.params.id;
+
+    Episode
+    	.destroy(id)
+    	.then((data) => {
+    		return Show.destroy(id)
+    	})
+        .then((data) => {
+            res.json(data);
+        })
+        .catch(err => console.log('ERROR: ', err));
 })
 
 module.exports = router;

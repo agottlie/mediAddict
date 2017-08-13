@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import Comment from './Comment';
 
 class MyShows extends Component {
 
@@ -11,7 +12,7 @@ class MyShows extends Component {
         $.ajax({
             url: `${this.props.url}/episodes/${this.props.episodeList[index].id}`,
             method: "PUT",
-            data: {watched: true, score: this.props.user.score + 5, user_id: this.props.user.id}
+            data: { watched: true, score: this.props.user.score + 5, user_id: this.props.user.id }
         }).done((data) => {
             $.ajax({
                 url: `${this.props.url}/episodes/scrape`,
@@ -23,9 +24,25 @@ class MyShows extends Component {
                     id: this.props.episodeList[index].id
                 }
             }).done((data) => {
+                console.log(data);
                 this.props.setScore(5);
             })
         });
+    }
+
+    showComments(episode) {
+        let ep = "#s" + episode.season + "e" + episode.episodenumber;
+        $.ajax({
+            url: `${this.props.url}/comments/${episode.maze_id}?media=show`
+        }).done((data) => {
+            this.props.setComments(data);
+        });
+        $(ep).css('display', 'block');
+    }
+
+    hideComments(episode) {
+        let ep = "#s" + episode.season + "e" + episode.episodenumber;
+        $(ep).css('display', 'none');
     }
 
     render() {
@@ -63,9 +80,28 @@ class MyShows extends Component {
                             <h3 className="inline">Episode {episode.season}.{episode.episodenumber}: {episode.name}</h3>
                             <h5 >Aired: {episode.airdate.substr(0, episode.airdate.length-6)}</h5>
                             <a href={episode.recap_url}>Recap</a>
+                            <button onClick={(e) => {this.showComments(episode)}}>Show Comments</button>
+                            <div 
+                                className="comment"
+                                id={"s" + episode.season + "e" + episode.episodenumber}
+                            >
+                                <Comment 
+                                    className="innerComment"
+                                    media="show"
+                                    media_id={episode.maze_id}
+                                    user={this.props.user}
+                                    url={this.props.url}
+                                    searchValue={this.props.searchValue}                                    handleNameChange={this.props.handleNameChange}
+                                    comments={this.props.comments}
+                                    episode={episode}
+                                    showComments={this.showComments.bind(this)}
+                                    hideComments={this.hideComments.bind(this)}
+                                    setDisplay={this.props.setDisplay}
+                                />
+                            </div>
                         </div>
                     );
-                } else if (episode.season === j && !episode.watched && d>=airdate ) {
+                } else if (episode.season === j && !episode.watched && d >= airdate) {
                     notWatchedCount++;
                     notWatched.push(
                         <div key={i}>
@@ -100,7 +136,8 @@ class MyShows extends Component {
 
         return (
             <div>
-                <h1>{this.props.currentShow.name}</h1>   
+                <h1>{this.props.currentShow.name}</h1>
+                <button onClick={(e) => {this.props.delete(e, "shows", this.props.currentShow.id)}}>Remove</button>
                 <div className="episodes">
                     <div className="watched">
                         <h1>Watched</h1>

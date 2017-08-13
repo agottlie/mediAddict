@@ -6,10 +6,10 @@ var request = require('request');
 var cheerio = require('cheerio');
 
 router.post('/', (req, res) => {
-    const { name, season, episodeNumber, airDate, watched, show_id, user_id, show_name } = req.body
+    const { name, season, episodeNumber, airDate, watched, show_id, user_id, show_name, maze_id } = req.body
 
     Episode
-    	.create(name, season, episodeNumber, airDate, watched, show_id, user_id, show_name)
+    	.create(name, season, episodeNumber, airDate, watched, show_id, user_id, show_name, maze_id)
         .then((data) => {
             res.json(data);
         })

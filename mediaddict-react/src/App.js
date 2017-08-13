@@ -25,7 +25,8 @@ class App extends Component {
             events: [],
             currentShow: null,
             currentMovie: null,
-            leaders: []
+            leaders: [],
+            comments: []
         }
     }
 
@@ -72,6 +73,12 @@ class App extends Component {
         })
     }
 
+    setComments(newValue) {
+        this.setState({
+            comments: newValue
+        })
+    }
+
     setMovies(newValue) {
         this.setState({
             myMovies: newValue
@@ -83,7 +90,7 @@ class App extends Component {
         tempUser.score += newValue;
         this.setState({
             user: tempUser
-        }, function complete() {this.setDisplay("profile")})
+        }, function complete() { this.setDisplay("profile") })
     }
 
     logout() {
@@ -108,6 +115,7 @@ class App extends Component {
         }, function complete() { this.setCurrentEpisodes() });
     }
 
+
     setCurrentEpisodes() {
         $.ajax({
             url: `${this.state.url}/episodes/show/${this.state.currentShow.id}`
@@ -115,6 +123,37 @@ class App extends Component {
             this.setState({
                 episodeList: data
             }, function complete() {
+                let tempList = this.state.episodeList;
+                $.ajax({
+                    url: `http://api.tvmaze.com/shows/${this.state.currentShow.maze_id}/episodes`
+                }).done((data) => {
+                    data.forEach((episode) => {
+                        let present = false;
+                        this.state.episodeList.forEach((ep) => {
+                            if (episode.season === ep.season && episode.number === ep.episodenumber) {
+                                present = true;
+                            }
+                        })
+                        if (!present) {
+                            let airdate;
+                            if (episode.airtime) {
+                                airdate = episode.airdate + "T" + episode.airtime;
+                            } else {
+                                airdate = episode.airstamp.substr(0, episode.airstamp.length - 9);
+                            }
+                            $.ajax({
+                                url: `${this.state.url}/episodes`,
+                                method: "POST",
+                                data: { name: episode.name, season: episode.season, episodeNumber: episode.number, airDate: airdate, watched: false, show_id: this.state.currentShow.id, user_id: this.state.user.id, show_name: this.state.currentShow.name }
+                            }).done((data) => {
+                                tempList.push(data);
+                                this.setState({
+                                    episodeList: tempList
+                                })
+                            }) 
+                        }
+                    });
+                });
                 this.setState({
                     display: "myShows"
                 })
@@ -165,8 +204,7 @@ class App extends Component {
 
     setRecaps() {
         this.state.episodeList.forEach((episode, index) => {
-            console.log(episode);
-            if (episode.watched && episode.recap_url===null) {
+            if (episode.watched && episode.recap_url === null) {
                 $.ajax({
                     url: `${this.state.url}/episodes/scrape`,
                     method: "PUT",
@@ -177,13 +215,14 @@ class App extends Component {
                         id: this.state.episodeList[index].id
                     }
                 }).done((data) => {
+                    console.log(data);
                     let tempList = this.state.episodeList;
                     tempList[index].recap_url = data.recap_url;
                     this.setState({
                         episodeList: tempList
                     })
                 })
-            }    
+            }
         })
     }
 
@@ -205,7 +244,7 @@ class App extends Component {
             $.ajax({
                 url: `${this.state.url}/movies`,
                 method: "POST",
-                data: { name: data.title, premiereDate: data.release_date, length: data.runtime, user_id: this.state.user.id }
+                data: { name: data.title, premiereDate: data.release_date, length: data.runtime, user_id: this.state.user.id, tmbd_id: data.id }
             }).done((data) => {
                 this.setState({
                     display: "profile"
@@ -225,7 +264,7 @@ class App extends Component {
         $.ajax({
             url: `${this.state.url}/shows`,
             method: "POST",
-            data: { name: this.state.show.name, premiereDate: this.state.show.premiered, network: network, user_id: this.state.user.id }
+            data: { name: this.state.show.name, premiereDate: this.state.show.premiered, network: network, user_id: this.state.user.id, maze_id: this.state.show.id }
         }).done((data) => {
             this.updateWatched(data, event);
         });
@@ -233,7 +272,7 @@ class App extends Component {
 
     updateWatched(data, event) {
         let tempList = this.state.episodeList;
-        this.state.episodeList.forEach((episode,index) => {
+        this.state.episodeList.forEach((episode, index) => {
             let ep = "#" + episode.id;
             if ($(ep).eq(0).attr('checked') === "checked") {
                 tempList[index].watched = true;
@@ -252,12 +291,12 @@ class App extends Component {
         if (episode.airtime) {
             airdate = episode.airdate + "T" + episode.airtime;
         } else {
-            airdate = episode.airstamp.substr(0, episode.airstamp.length-9);
+            airdate = episode.airstamp.substr(0, episode.airstamp.length - 9);
         }
         $.ajax({
             url: `${this.state.url}/episodes`,
             method: "POST",
-            data: { name: episode.name, season: episode.season, episodeNumber: episode.number, airDate: airdate, watched: episode.watched, show_id: show_id, user_id: this.state.user.id, show_name: show_name }
+            data: { name: episode.name, season: episode.season, episodeNumber: episode.number, airDate: airdate, watched: episode.watched, show_id: show_id, user_id: this.state.user.id, show_name: show_name, maze_id: episode.id }
         }).done((data) => {
             this.setState({
                 count: this.state.count + 1
@@ -267,9 +306,22 @@ class App extends Component {
             } else {
                 this.setState({
                     count: 0,
-                    display: 'profile'
+                    display: 'profile',
+                    searchValue: ""
                 })
             }
+        });
+    }
+
+    delete(event, type, id) {
+        event.preventDefault();
+        $.ajax({
+            url: `${this.state.url}/${type}/${id}`,
+            method: "DELETE"
+        }).done((data) => {
+            this.setState({
+                display: "profile"
+            })
         });
     }
 
@@ -326,6 +378,9 @@ class App extends Component {
                     leaders={this.state.leaders}
                     setLeaders={this.setLeaders.bind(this)}
                     setRecaps={this.setRecaps.bind(this)}
+                    delete={this.delete.bind(this)}
+                    setComments={this.setComments.bind(this)}
+                    comments={this.state.comments}
                 />
             </div>
             )

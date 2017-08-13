@@ -20,7 +20,7 @@ class Display extends Component {
         }
     }
 
-    getEpisodesAndMovies(view) {
+    getEpisodesAndMovies(view, day) {
         $.ajax({
             url: `${this.props.url}/episodes/${this.props.user.id}`
         }).done((data) => {
@@ -50,6 +50,7 @@ class Display extends Component {
                     }
                     $('#calendar').fullCalendar({
                         defaultView: view,
+                        firstDay: day,
                         header: {
                             left: 'prev,next today',
                             center: 'title',
@@ -140,6 +141,12 @@ class Display extends Component {
                     url={this.props.url}
                     setScore={this.props.setScore}
                     setRecaps={this.props.setRecaps}
+                    delete={this.props.delete}
+                    searchValue={this.props.searchValue}
+                    setComments={this.props.setComments}
+                    handleNameChange={this.props.handleNameChange}
+                    comments={this.props.comments}
+                    setDisplay={this.props.setDisplay}
                 />;
 
 //---------------------MY MOVIES VIEW--------------------------------
@@ -151,6 +158,7 @@ class Display extends Component {
                     setDisplay={this.props.setDisplay}
                     user={this.props.user}
                     setScore={this.props.setScore}
+                    delete={this.props.delete}
                 />;
 
         }

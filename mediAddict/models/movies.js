@@ -1,16 +1,16 @@
 db = require('../db/config')
 
 function findAll(id) { 
-	return db.manyOrNone('SELECT * FROM movies WHERE user_id = $1 ORDER BY watched, premiereDate DESC ', [id])
+	return db.manyOrNone('SELECT * FROM movies WHERE user_id = $1 ORDER BY watched, premieredate DESC ', [id])
 };
 
 function findById(id) {
 	return db.one(`SELECT * FROM movies WHERE id = $1`, [id])
 };
 
-function create(name, premiereDate, length, user_id) {
-	return db.one(`INSERT INTO movies (name, premiereDate, length, user_id, watched) VALUES ($1, $2, $3, $4, $5) returning id`,
-  	[name, premiereDate, length, user_id, false]);
+function create(name, premieredate, length, user_id, tmdb_id) {
+	return db.one(`INSERT INTO movies (name, premieredate, length, user_id, watched, tmdb_id) VALUES ($1, $2, $3, $4, $5, $6) returning id`,
+  	[name, premieredate, length, user_id, false, tmdb_id]);
 };
 
 function destroy(id) {

@@ -20,7 +20,6 @@ class MyMovies extends Component {
 	                url: url,
 	                method: "GET"         
 	            }).done((data) => {
-	                console.log(data);
 	                $.ajax({
 		                url: `${this.props.url}/movies/recap`,
 		                method: "PUT",
@@ -66,6 +65,7 @@ class MyMovies extends Component {
 	        	<h3>Run Time: {this.props.currentMovie.length} minutes</h3>
 	        	<br />
 	        	{status}
+	        	<button onClick={(e) => {this.props.delete(e, "movies", this.props.currentMovie.id)}}>Remove</button>
 	        </div>
 	    );
 	}

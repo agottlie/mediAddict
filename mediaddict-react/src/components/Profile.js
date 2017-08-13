@@ -6,7 +6,7 @@ class Profile extends Component {
 	componentDidMount() {
 	 	this.getShows();
         this.getMovies();
-        this.props.getEpisodesAndMovies('listWeek');
+        this.props.getEpisodesAndMovies('listWeek', 'today');
    	}
 
    	getShows() {

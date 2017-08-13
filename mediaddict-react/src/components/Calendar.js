@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Calendar extends Component {
 
     componentDidMount() {
-        this.props.getEpisodesAndMovies('month');
+        this.props.getEpisodesAndMovies('month', 7);
     }
 
 

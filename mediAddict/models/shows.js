@@ -8,9 +8,9 @@ function findById(id) {
 	return db.one(`SELECT * FROM shows WHERE id = $1`, [id])
 };
 
-function create(name, premiereDate, network, user_id) {
-	return db.one(`INSERT INTO shows (name, premiereDate, network, user_id) VALUES ($1, $2, $3, $4) returning *`,
-  	[name, premiereDate, network, user_id]);
+function create(name, premieredate, network, user_id, maze_id) {
+	return db.one(`INSERT INTO shows (name, premieredate, network, user_id, maze_id) VALUES ($1, $2, $3, $4, $5) returning *`,
+  	[name, premieredate, network, user_id, maze_id]);
 };
 
 function destroy(id) {

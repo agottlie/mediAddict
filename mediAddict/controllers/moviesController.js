@@ -4,10 +4,10 @@ const User = require('../models/users')
 const Leaderboard = require('../models/leaderboard')
 
 router.post('/', (req, res) => {
-    const { name, premiereDate, length, user_id } = req.body
+    const { name, premiereDate, length, user_id, tmdb_id } = req.body
 
     Movie
-    	.create(name, premiereDate, length, user_id)
+    	.create(name, premiereDate, length, user_id, tmdb_id)
         .then((data) => {
             res.json(data);
         })
@@ -48,7 +48,6 @@ router.put('/:id', (req, res) => {
           return User.update(score, user_id)
         })
         .then(data => {
-            console.log("HIII");
             return Leaderboard.update(score, user_id)
         })
         .then((data) => {
@@ -56,5 +55,16 @@ router.put('/:id', (req, res) => {
         })
         .catch(err => console.log('ERROR: ', err));
 });
+
+router.delete('/:id', (req,res) => {
+    const id = req.params.id;
+
+    Movie
+        .destroy(id)
+        .then((data) => {
+            res.json(data);
+        })
+        .catch(err => console.log('ERROR: ', err));
+})
 
 module.exports = router;

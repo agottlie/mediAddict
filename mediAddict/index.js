@@ -26,6 +26,7 @@ app.use('/episodes', require('./controllers/episodesController'));
 app.use('/movies', require('./controllers/moviesController'));
 app.use('/login', require('./controllers/sessionsController'));
 app.use('/leaderboard', require('./controllers/leaderboardController'));
+app.use('/comments', require('./controllers/commentsController'));
 
 
 app.listen(PORT, () => console.log('Server listening on port', PORT));

@@ -12,13 +12,13 @@ function findById(id) {
 	return db.one(`SELECT * FROM episodes WHERE id = $1`, [id])
 };
 
-function create(name, season, episodeNumber, airDate, watched, show_id, user_id, show_name) {
-	return db.one(`INSERT INTO episodes (name, season, episodeNumber, airDate, watched, show_id, user_id, show_name) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) returning id`,
-  	[name, season, episodeNumber, airDate, watched, show_id, user_id, show_name]);
+function create(name, season, episodenumber, airdate, watched, show_id, user_id, show_name, maze_id) {
+	return db.one(`INSERT INTO episodes (name, season, episodenumber, airdate, watched, show_id, user_id, show_name, maze_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning *`,
+  	[name, season, episodenumber, airdate, watched, show_id, user_id, show_name, maze_id]);
 };
 
 function destroy(id) {
-	return db.none('DELETE FROM episodes WHERE id = $1', [id])
+	return db.none('DELETE FROM episodes WHERE show_id = $1', [id])
 };
 
 function update(watched, id) {
