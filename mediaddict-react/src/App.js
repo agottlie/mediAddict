@@ -244,7 +244,7 @@ class App extends Component {
             $.ajax({
                 url: `${this.state.url}/movies`,
                 method: "POST",
-                data: { name: data.title, premiereDate: data.release_date, length: data.runtime, user_id: this.state.user.id, tmbd_id: data.id }
+                data: { name: data.title, premiereDate: data.release_date, length: data.runtime, user_id: this.state.user.id, tmdb_id: data.id }
             }).done((data) => {
                 this.setState({
                     display: "profile"

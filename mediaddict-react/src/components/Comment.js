@@ -11,7 +11,7 @@ class Comment extends Component {
             method: "POST",
             data: { comment: this.props.searchValue, mediatype: this.props.media, media_id: this.props.media_id, user_name: this.props.user.name, post_date: d, user_id: this.props.user.id }
         }).done((data) => {
-            this.props.showComments(this.props.episode)
+            this.props.showComments(this.props.current)
         })
     }
 

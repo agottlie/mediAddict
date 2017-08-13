@@ -2,8 +2,22 @@ import React, { Component } from 'react';
 import Moment from 'react-moment';
 import $ from 'jquery';
 import 'moment-timezone';
+import Comment from './Comment';
 
 class MyMovies extends Component {
+	showComments(movie) {
+        $.ajax({
+            url: `${this.props.url}/comments/${movie.tmdb_id}?media=movie`
+        }).done((data) => {
+            this.props.setComments(data);
+        });
+        $('.comment').css('display', 'block');
+    }
+
+    hideComments(episode) {
+        $('.comment').css('display', 'none');
+    }
+
 	updateWatched() {
 		if (this.props.currentMovie.watched === false) {
 			$.ajax({
@@ -45,6 +59,23 @@ class MyMovies extends Component {
 				<div>
 					<h2>Status: Watched</h2>
 					<a href={this.props.currentMovie.recap_url}>Read Review</a>
+					<button onClick={(e) => {this.showComments(this.props.currentMovie)}}>Show Comments</button>
+                    <div 
+                        className="comment"
+                    >
+                        <Comment 
+                            className="innerComment"
+                            media="movie"
+                            media_id={this.props.currentMovie.tmdb_id}
+                            user={this.props.user}
+                            url={this.props.url}
+                            searchValue={this.props.searchValue}                                    handleNameChange={this.props.handleNameChange}
+                            comments={this.props.comments}
+                            current={this.props.currentMovie}
+                            showComments={this.showComments.bind(this)}
+                            hideComments={this.hideComments.bind(this)}
+                        />
+                    </div>
 				</div>;
 		} else {
 			status = 

@@ -15,6 +15,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req,res) => {
 	const {comment, mediatype, media_id, user_name, post_date, user_id} = req.body;
+
 	Comment
 		.create(comment, mediatype, media_id, user_name, post_date, user_id)
 		.then((data) => {

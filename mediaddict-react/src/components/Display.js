@@ -159,6 +159,10 @@ class Display extends Component {
                     user={this.props.user}
                     setScore={this.props.setScore}
                     delete={this.props.delete}
+                    searchValue={this.props.searchValue}
+                    setComments={this.props.setComments}
+                    handleNameChange={this.props.handleNameChange}
+                    comments={this.props.comments}
                 />;
 
         }

@@ -93,11 +93,9 @@ class MyShows extends Component {
                                     url={this.props.url}
                                     searchValue={this.props.searchValue}                                    handleNameChange={this.props.handleNameChange}
                                     comments={this.props.comments}
-                                    episode={episode}
+                                    current={episode}
                                     showComments={this.showComments.bind(this)}
-                                    hideComments={this.hideComments.bind(this)}
-                                    setDisplay={this.props.setDisplay}
-                                />
+                                    hideComments={this.hideComments.bind(this)}                                />
                             </div>
                         </div>
                     );
