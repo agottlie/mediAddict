@@ -1,18 +1,37 @@
 const router = require('express').Router();
 const Movie = require('../models/movies');
-const User = require('../models/users')
-const Leaderboard = require('../models/leaderboard')
+const MovieAPI = require('../services/movies')
+const User = require('../models/users');
+const Leaderboard = require('../models/leaderboard');
+const axios = require('axios');
 
 router.post('/', (req, res) => {
-    const { name, premiereDate, length, user_id, tmdb_id, image } = req.body
-
-    Movie
-    	.create(name, premiereDate, length, user_id, tmdb_id, image)
+    const { user_id, movie, generic_image } = req.body
+    MovieAPI
+        .getMovie(movie)
         .then((data) => {
+            let poster;
+            if (data.data.poster_path) {
+                poster = "https://image.tmdb.org/t/p/w300/" + data.data.poster_path;
+            } else {
+                poster = generic_image;
+            }
+            return Movie.create(data.data.title, data.data.release_date, data.data.runtime, user_id, data.data.id, poster)
+        }).then((data) => {
             res.json(data);
         })
         .catch(err => console.log('CONTROLLER POST ERROR: ', err));
 });
+
+router.get('/find', (req,res) => {
+    const query = req.query.q;
+    MovieAPI
+        .searchMovie(query)
+        .then((data) => {
+            res.json(data.data);
+        })
+        .catch(err => console.log('ERROR: ', err));
+})
 
 router.get('/:id', (req, res) => {
 	const user_id = req.params.id;
