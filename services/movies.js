@@ -18,6 +18,19 @@ function searchMovie(query) {
     console.log(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.TMDB_KEY}&query=${query}`);
 
     return queryPromise;
-}	
+}
 
-module.exports = { getMovie, searchMovie };
+function getRecap(query) {
+	const queryPromise = axios({
+		url: "https://api.nytimes.com/svc/movies/v2/reviews/search.json",
+		params: {
+			'api-key': process.env.NYT_KEY,
+			'query': query
+		},
+		method: 'GET'
+	})
+
+	return queryPromise
+}
+
+module.exports = { getMovie, searchMovie, getRecap };

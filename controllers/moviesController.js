@@ -23,7 +23,7 @@ router.post('/', (req, res) => {
         .catch(err => console.log('CONTROLLER POST ERROR: ', err));
 });
 
-router.get('/find', (req,res) => {
+router.get('/find', (req, res) => {
     const query = req.query.q;
     MovieAPI
         .searchMovie(query)
@@ -34,23 +34,29 @@ router.get('/find', (req,res) => {
 })
 
 router.get('/:id', (req, res) => {
-	const user_id = req.params.id;
-	Movie
-		.findAll(user_id)
-		.then((data) => {
-			res.json(data);
-		})
-		.catch(err => console.log('CONTROLLER GET ERROR: ', err));
-})
-
-router.put('/recap', (req,res) => {
-    const recap_url = req.body.recap_url;
-    const id = req.body.id;
-
+    const user_id = req.params.id;
     Movie
-        .addRecap(recap_url, id)
+        .findAll(user_id)
         .then((data) => {
             res.json(data);
+        })
+        .catch(err => console.log('CONTROLLER GET ERROR: ', err));
+})
+
+router.put('/recap', (req, res) => {
+    const id = req.body.id;
+    const query = req.body.query;
+
+    MovieAPI
+        .getRecap(query)
+        .then((data) => {
+            if (data.data.results.length > 0) {
+                return Movie
+                    .addRecap(data.data.results[0].link.url, id)
+                    .then((data) => {
+                        res.json(data);
+                    })
+            }
         })
         .catch(err => console.log('CONTROLLER GET ERROR: ', err));
 })
@@ -64,18 +70,18 @@ router.put('/:id', (req, res) => {
     Movie
         .update(watched, id)
         .then(data => {
-          return User.update(score, user_id)
+            return User.update(score, user_id)
         })
         .then(data => {
             return Leaderboard.update(score, user_id)
         })
         .then((data) => {
-        	res.json(data)
+            res.json(data)
         })
         .catch(err => console.log('ERROR: ', err));
 });
 
-router.delete('/:id', (req,res) => {
+router.delete('/:id', (req, res) => {
     const id = req.params.id;
 
     Movie
