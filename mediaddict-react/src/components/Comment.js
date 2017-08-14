@@ -34,7 +34,7 @@ class Comment extends Component {
             >
             	<form onSubmit={this.addComment.bind(this)}>
                     <label>
-                        Comment:
+                        Add Comment:
                         <input type="text" name="name" 
                             value={this.props.searchValue}
                             onChange={this.props.handleNameChange.bind(this)}/>
@@ -46,7 +46,7 @@ class Comment extends Component {
                 </ul>
                 <div 
                 	className="close"
-                	onClick={(e) => {this.props.hideComments(this.props.episode)}}
+                	onClick={(e) => {this.props.hideComments(this.props.current)}}
                 >
                 	X
                 </div>

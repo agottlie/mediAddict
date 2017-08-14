@@ -3,10 +3,10 @@ const Show = require('../models/shows');
 const Episode = require('../models/episodes')
 
 router.post('/', (req, res) => {
-    const { name, premiereDate, network, user_id, maze_id } = req.body
+    const { name, premiereDate, network, user_id, maze_id, image } = req.body
 
     Show
-    	.create(name, premiereDate, network, user_id, maze_id)
+    	.create(name, premiereDate, network, user_id, maze_id, image)
         .then((data) => {
             res.json(data);
         })

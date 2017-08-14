@@ -42,12 +42,12 @@ class Profile extends Component {
                 notWatchedCount = 0;
             watched.push(
                 <div>
-                    <h2 className="movieHeader">Up to Date</h2>
+                    <h2 className="showHeader">Up to Date</h2>
                 </div>
             )
             notWatched.push(
                 <div>
-                    <h2 className="movieHeader">Watching</h2>
+                    <h2 className="showHeader">Watching</h2>
                 </div>
             )
 	        this.props.myShows.forEach((show,i) => {
@@ -60,15 +60,17 @@ class Profile extends Component {
 	            if (count === 0) {
                     watchedCount++;
                     watched.push(
-                        <li key={i} onClick={(e) => {this.handleShowClick(e, i)}}>
-		                    <h3>{show.name}</h3>
+                        <li className="list" key={i} onClick={(e) => {this.handleShowClick(e, i)}}>
+                            <img src={show.image} alt=""/>
+                            <h3>{show.name}</h3>
 		                </li>
                     );
                 } else {
                     notWatchedCount++;
                     notWatched.push(
-                        <li key={i} onClick={(e) => {this.handleShowClick(e, i)}}>
-		                    <h3>{show.name}</h3>
+                        <li className="list" key={i} onClick={(e) => {this.handleShowClick(e, i)}}>
+                            <img src={show.image} alt=""/>
+                            <h3>{show.name}</h3>
 		                </li>
                     );
                 }
@@ -119,22 +121,25 @@ class Profile extends Component {
 	            if (movie.watched) {
                     watchedCount++;
                     watched.push(
-                        <li key={i} onClick={(e) => {this.handleMovieClick(i)}}>
-		                    <h3>{movie.name}</h3>
+                        <li className="list" key={i} onClick={(e) => {this.handleMovieClick(i)}}>
+		                    <img src={movie.image} alt=""/>
+                            <h3>{movie.name}</h3>
 		                </li>
                     );
                 } else if (!movie.watched && d>=premieredate ) {
                     notWatchedCount++;
                     notWatched.push(
-                        <li key={i} onClick={(e) => {this.handleMovieClick(i)}}>
-		                    <h3>{movie.name}</h3>
+                        <li className="list" key={i} onClick={(e) => {this.handleMovieClick(i)}}>
+		                    <img src={movie.image} alt=""/>
+                            <h3>{movie.name}</h3>
 		                </li>
                     );
                 } else {
                     upcomingCount++;
                     upcoming.push(
-                        <li key={i} onClick={(e) => {this.handleMovieClick(i)}}>
-		                    <h3>{movie.name}</h3>
+                        <li className="list" key={i} onClick={(e) => {this.handleMovieClick(i)}}>
+		                    <img src={movie.image} alt=""/>
+                            <h3>{movie.name}</h3>
 		                </li>
                     );
                 }
@@ -164,22 +169,33 @@ class Profile extends Component {
 		return (
 	        <div className="profile">
                 <div className="shows">
-                	<h2>MY SHOWS</h2>
+                	<div className="tv-images">
+                        <div className="tv-img"></div>
+                        <div className="tv-img"></div>
+                        <div className="tv-img"></div>
+                    </div>
+                    <h2>MY SHOWS</h2>
 	                <ul>
 	                	{this.renderShows()}
 	                </ul>
 	            </div>
-
-	            <div className="movies">
-	            	<h2>MY MOVIES</h2>
-	                <ul>
-	                	{this.renderMovies()}
-	                </ul>
-	            </div>
               
                 <div className="upcoming">
-                	<h2>UPCOMING</h2>
+                	<div className="title">mediAddict</div>
+                    <h2>UPCOMING</h2>
                 	<div id="calendar"></div>
+                </div>
+
+                <div className="movies">
+                    <div className="movie-images">
+                        <div className="movie-img"></div>
+                        <div className="movie-img"></div>
+                        <div className="movie-img"></div>
+                    </div>
+                    <h2>MY MOVIES</h2>
+                    <ul>
+                        {this.renderMovies()}
+                    </ul>
                 </div>
             </div>
 	    );

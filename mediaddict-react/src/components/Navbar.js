@@ -10,8 +10,7 @@ class Display extends Component {
             navDisplay = 
                 <div className="nav">
                     <div className='points'>
-                        <h4>{this.props.user.name}'s Points</h4>
-                        <p>{this.props.user.score}</p>
+                        <h4>{this.props.user.name}'s Points: <span className="points-value">{this.props.user.score}</span></h4>
                     </div>
                     <ul>
                         <li onClick={(e) => {this.props.setDisplay("profile")}}>Profile</li>

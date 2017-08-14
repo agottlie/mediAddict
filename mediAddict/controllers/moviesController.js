@@ -4,10 +4,10 @@ const User = require('../models/users')
 const Leaderboard = require('../models/leaderboard')
 
 router.post('/', (req, res) => {
-    const { name, premiereDate, length, user_id, tmdb_id } = req.body
+    const { name, premiereDate, length, user_id, tmdb_id, image } = req.body
 
     Movie
-    	.create(name, premiereDate, length, user_id, tmdb_id)
+    	.create(name, premiereDate, length, user_id, tmdb_id, image)
         .then((data) => {
             res.json(data);
         })

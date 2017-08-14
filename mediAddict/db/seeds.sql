@@ -19,6 +19,7 @@ CREATE TABLE shows (
 	name VARCHAR(255),
 	premieredate VARCHAR(255),
 	network VARCHAR(255),
+	image VARCHAR(255),
 	maze_id INTEGER,
 	user_id INTEGER REFERENCES users
 );
@@ -31,6 +32,7 @@ CREATE TABLE movies (
 	tmdb_id INTEGER,
 	watched BOOLEAN,
 	recap_url VARCHAR(255),
+	image VARCHAR(255),
 	user_id INTEGER REFERENCES users
 );
 

@@ -8,9 +8,9 @@ function findById(id) {
 	return db.one(`SELECT * FROM movies WHERE id = $1`, [id])
 };
 
-function create(name, premieredate, length, user_id, tmdb_id) {
-	return db.one(`INSERT INTO movies (name, premieredate, length, user_id, watched, tmdb_id) VALUES ($1, $2, $3, $4, $5, $6) returning id`,
-  	[name, premieredate, length, user_id, false, tmdb_id]);
+function create(name, premieredate, length, user_id, tmdb_id, image) {
+	return db.one(`INSERT INTO movies (name, premieredate, length, user_id, watched, tmdb_id, image) VALUES ($1, $2, $3, $4, $5, $6, $7) returning id`,
+  	[name, premieredate, length, user_id, false, tmdb_id, image]);
 };
 
 function destroy(id) {

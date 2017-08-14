@@ -1,22 +1,106 @@
-.App {
+body {
+    font-family: 'Fredericka the Great', cursive;
+    background: linear-gradient(270deg, #f3f6f5, #a0a7a5);
+    background-size: 400% 400%;
+    -webkit-animation: AnimationName 30s ease infinite;
+    -moz-animation: AnimationName 30s ease infinite;
+    animation: AnimationName 30s ease infinite;
+}
+
+input {
+    border: 1px solid black;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
     text-align: center;
 }
 
-.App-logo {
-    animation: App-logo-spin infinite 20s linear;
-    height: 80px;
+li {
+    cursor: pointer;
 }
 
-.App-header {
-    background-color: #222;
-    height: 150px;
-    padding: 20px;
-    color: white;
+.intro {
+    height: 100vh;
 }
 
-.App-intro {
-    font-size: large;
+.intro,
+.auth-form,
+.input-fields {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
 }
+
+.input-fields {
+    align-items: flex-end;
+}
+
+.input-fields>div {
+    margin: 5px;
+}
+
+#email,
+#password,
+#name,
+#password_confirmation {
+    margin-left: 5px;
+}
+
+.form-buttons {
+    float: right;
+}
+
+.form-button {
+    margin: 3px;
+}
+
+.logo {
+    background-image: url("./images/tv.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 40vw;
+    width: 61.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5vw;
+}
+
+.header,
+.tv-images,
+.movie-images {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.title {
+    text-align: center;
+    font-size: 5vw;
+    border-bottom: 1px solid black;
+}
+
+.tv-img,
+.movie-img {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 77px;
+    margin: 10px;
+}
+
+.tv-img {
+    background-image: url("./images/tv.png");
+}
+
+.movie-img {
+    background-image: url("./images/clapboard.png");
+}
+
 
 .nav {
     position: fixed;
@@ -28,6 +112,7 @@
     align-items: center;
     justify-content: flex-end;
     z-index: 30;
+    color: darkgoldenrod;
 }
 
 .nav>ul>li {
@@ -39,14 +124,47 @@
     padding-top: 10vh;
 }
 
+
 .profile {
     display: flex;
-    align-items: row;
-    justify-content: space-around;
+    flex-direction: row;
+    justify-content: center;
 }
 
-.inline {
-    display: inline;
+.shows,
+.movies,
+.upcoming {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 30vw;
+}
+
+.upcoming {
+    padding: 0 20px;
+}
+
+.movieHeader,
+.showHeader {
+    color: darkgoldenrod;
+}
+
+.list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 0;
+    border: 1px solid black;
+    padding: 5px;
+    background-color: lightgray;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.list>img {
+    height: 70px;
+    width: 50px;
+    margin-right: 20px;
 }
 
 #calendar {
@@ -54,18 +172,14 @@
     margin: auto;
 }
 
-.upcoming {
-    width: 25vw;
-}
-
-.points>h4,
-.points>p {
-    margin: 0;
-}
-
 .points {
-  position: absolute;
-  left: 5vw;
+    position: absolute;
+    left: 5vw;
+}
+
+.points-value {
+    margin-left: 5px;
+    color: white;
 }
 
 .episodes {
@@ -97,7 +211,7 @@
     width: 100vw;
     top: 7vh;
     left: 0;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .close {
@@ -109,6 +223,38 @@
     padding: 2px;
 }
 
-ul {
-    list-style: none;
+@-webkit-keyframes AnimationName {
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
+}
+
+@-moz-keyframes AnimationName {
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
+}
+
+@keyframes AnimationName {
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
 }

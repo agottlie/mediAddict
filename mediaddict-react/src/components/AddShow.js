@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 
 class AddShow extends Component {
-	handleShowSubmit(event){
+	componentDidMount() {
+        $('.instructions').css('display', 'block');
+    }
+
+    handleShowSubmit(event){
         event.preventDefault();
+        $('.instructions').css('display', 'none');
         $.ajax({
             url: "http://api.tvmaze.com/search/shows",
             data: { q: this.props.searchValue }
@@ -37,6 +42,9 @@ class AddShow extends Component {
                     </label>
                     <input type="submit" value="Submit" />
                 </form>
+                <div className="instructions">
+                    <p>Search for a show you'd like to follow in the above search box.  When the episodes appear, check off which ones you've already watched, so that only unseen and upcoming episodes are tracked.  You can still read recaps for the episodes you've watched.</p>
+                </div>
                 <div>
                     {this.renderShowQuery()}
                 </div>

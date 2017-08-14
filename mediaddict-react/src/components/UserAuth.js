@@ -20,10 +20,20 @@ class UserAuth extends Component {
   }
 
   render(){
-    return this.state.mode === "login" ? (
-      <Login {...this.props} toggleMode={this.toggleMode.bind(this)} />
-    ) : (
-      <Signup {...this.props} toggleMode={this.toggleMode.bind(this)} />
+    let display;
+    if (this.state.mode === 'login') {
+      display = <Login {...this.props} toggleMode={this.toggleMode.bind(this)} />;
+    } else {
+      display = <Signup {...this.props} toggleMode={this.toggleMode.bind(this)} />;
+    }
+
+    return (
+      <div className="intro">
+        {display}
+        <div className="logo">
+          <div>mediAddict</div>
+        </div>
+      </div>
     )
   }
 }

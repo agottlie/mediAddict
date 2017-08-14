@@ -34,16 +34,20 @@ class MyMovies extends Component {
 	                url: url,
 	                method: "GET"         
 	            }).done((data) => {
-	                $.ajax({
-		                url: `${this.props.url}/movies/recap`,
-		                method: "PUT",
-		                data: {
-		                    id: this.props.currentMovie.id,
-		                    recap_url: data.results[0].link.url
-		                }
-		            }).done((data) => {
-			            this.props.setScore(10);
-			        })
+	                if (data.results.length>0) {
+		                $.ajax({
+			                url: `${this.props.url}/movies/recap`,
+			                method: "PUT",
+			                data: {
+			                    id: this.props.currentMovie.id,
+			                    recap_url: data.results[0].link.url
+			                }
+			            }).done((data) => {
+				            this.props.setScore(10);
+				        })
+	                } else {
+	                	this.props.setScore(10);
+	                }
 			    });
 	        });
     	}	
