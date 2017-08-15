@@ -10,7 +10,7 @@ function update (score, user_id) {
 }
 
 function findAll() { 
-	return db.manyOrNone('SELECT * FROM leaderboard ORDER BY score DESC LIMIT 2')
+	return db.manyOrNone('SELECT * FROM leaderboard ORDER BY score DESC LIMIT 10')
 };
 
 module.exports = { create, update, findAll };
