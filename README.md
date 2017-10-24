@@ -75,10 +75,3 @@ With the routes working, it was time to create the React server to render everyt
 Additional steps included setting up a calendar view to see all upcoming events, as well as implementing leaderboard to track who's been watching the most media.  Comments were then implemented for people to discuss shows/movies they've viewed.  Finally, functionality was included to either connect to an API or do some primitive web scraping in order source reviews/recaps for any media that's been watched.
 
 The last step was to style the html and comment up my code.
-
-taurant data by rating was another reach goal I did not have time for, nor was I able to built out a very robust search feature.
-
-
-## Presentation
-
-[Link](https://docs.google.com/presentation/d/1X8mTnI7ln7b4ISYvWCbRG4OoicRRB8asmQMUclXwexA/edit?usp=sharing)

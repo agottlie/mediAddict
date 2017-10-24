@@ -42,7 +42,7 @@ router.put('/scrape', (req,res) => {
     const episodeNumber = req.body.episodeNumber;
     const id = req.body.id;
 
-    const site = `http://www.avclub.com/tv/${name}/?season=${season}`;
+    const site = `http://tv.avclub.com/c/tv-review/${name}/season-${season}`;
     let recap = ""
     request(site, function(error, response, html){
         if(!error){
